@@ -26,6 +26,12 @@ pipeline {
             steps {
                 sh 'ant -f build.xml -v'
             }
+
+            post {
+                success {
+                    archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
+                }
+            }
         }
 
         stage('deploy') {
@@ -46,12 +52,6 @@ pipeline {
                 sh "wget http://centos7-01/rectangles/all/rectangle_${BUILD_NUMBER}.jar"
                 sh "java -jar rectangle_${BUILD_NUMBER}.jar 3 7"
             }
-        }
-    }
-
-    post {
-        always {
-            archiveArtifacts artifacts: 'dist/*.jar', fingerprint: true
         }
     }
 }
