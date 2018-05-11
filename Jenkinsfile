@@ -53,5 +53,15 @@ pipeline {
                 sh "java -jar rectangle_${BUILD_NUMBER}.jar 3 7"
             }
         }
+
+        stage("Test on Debian"){
+            agent{
+                docker'openjdk:10.0.1-10-jre'
+            }
+            steps {
+                sh "wget http://centos7-01/rectangles/all/rectangle_${BUILD_NUMBER}.jar"
+                sh "java -jar rectangle_${BUILD_NUMBER}.jar 2 4"
+            }
+        }
     }
 }
