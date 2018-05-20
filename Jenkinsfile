@@ -91,7 +91,7 @@ pipeline {
             }
             steps {
                 echo "Configure git user settings"
-                sh 'git config --global user.mail jenkins@centos7-01.local'
+                sh 'git config --global user.email jenkins@centos7-01.local'
                 sh "git config --global user.name 'Jenkins Centos7-01'"
                 echo "Stashing Any Local Changes"
                 sh 'git stash'
