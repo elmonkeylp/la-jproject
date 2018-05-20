@@ -82,7 +82,7 @@ pipeline {
             }
         }
 
-        stage ("Promot Development Branch to Master") {
+        stage ("Promote Development Branch to Master") {
             agent {
                 label 'apache'
             }
@@ -90,6 +90,9 @@ pipeline {
                 branch 'development'
             }
             steps {
+                echo "Configure git user settings"
+                sh 'git config --global user.mail jenkins@centos7-01'
+                sh "git config --global user.name 'Jenkins Centos7-01'"
                 echo "Stashing Any Local Changes"
                 sh 'git stash'
                 echo "Checking Out Development Branch"
