@@ -2,7 +2,7 @@ pipeline {
 
     agent none
 
-    env {
+    environment {
         MAJOR_VERSION = 1
     }
 
@@ -59,7 +59,7 @@ pipeline {
             }
         }
 
-        stage("Test on Debian"){
+        /*stage("Test on Docker"){
             agent{
                 docker'openjdk:10.0.1-10-jre'
             }
@@ -67,7 +67,7 @@ pipeline {
                 sh "wget http://192.168.1.201/rectangles/all/${BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar"
                 sh "java -jar rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar 2 4"
             }
-        }
+        }*/
 
         stage("Promote to Green") {
             agent {
@@ -77,6 +77,7 @@ pipeline {
                 branch 'master'
             }
             steps {
+                sh "if ![ -d '/var/www/html/rectangles/green']; then mkdir -p /var/www/html/rectangles/green; fi"
                 sh "cp /var/www/html/rectangles/all/${BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/rectangles/green/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar"
             }
         }
