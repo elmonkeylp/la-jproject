@@ -44,7 +44,7 @@ pipeline {
             }
 
             steps {
-                sh "mkdir -p /var/www/html/rectangles/all/${env.BRANCH_NAME}"
+                sh "if ![ -d '/var/www/html/rectangles/all/${env.BRANCH_NAME}']; then mkdir -p /var/www/html/rectangles/all/${env.BRANCH_NAME}; fi"
                 sh "cp dist/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/rectangles/all/${BRANCH_NAME}/"
             }
         }
@@ -77,7 +77,7 @@ pipeline {
                 branch 'master'
             }
             steps {
-                sh "cp /var/www/html/rectangles/all/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/green/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar"
+                sh "cp /var/www/html/rectangles/all/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/rectangles/green/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar"
             }
         }
 
@@ -94,6 +94,7 @@ pipeline {
                 echo "Checking Out Development Branch"
                 sh 'git checkout development'
                 echo "Checking Out Master Branch"
+                sh 'git pull'
                 sh 'git checkout master'
                 echo "Merging Development into Master Branch"
                 sh 'git merge development'
